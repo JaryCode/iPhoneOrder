@@ -1,0 +1,43 @@
+name: 自动打包发布
+
+on:
+  push:
+    branches: [ "feat_2024" ]
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: 使用 Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18.x'
+
+    - name: 安装依赖并构建
+      run: |
+        npm install
+        npm run build:extension
+
+    - name: 创建 Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: Release ${{ github.ref }}
+        draft: false
+        prerelease: false
+
+    - name: 上传 Release 资产
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./iPhoneOrder.zip
+        asset_name: iPhoneOrder.zip
+        asset_content_type: application/zip
