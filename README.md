@@ -11,7 +11,16 @@
 
 <b>现已支持 [npm 打包](#npm_build)<b>
 
+<b>现已支持 [Github Action 自动打包](#github_action)</b>
+
 ------
+<a id="github_action"></a>
+
+## 自动打包
+每次commit提交都会自动通过 Github Actions 进行打包。
+<br />
+请先事先检查仓库设置：<br />
+确保在仓库的 Settings > Actions > General 中，"Workflow permissions" 设置为 "Read and write permissions"。
 
 ## 说明
 
