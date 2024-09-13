@@ -13,7 +13,7 @@
     "build:extension:after": "bun run build && bun run afterbuild",
     "bun:extension": "bun clear:terminal && cross-env-shell BUILD_TYPE=extension bun run build:extension:after && bun run bunbuild && bun zip:extension",
     "pack:extensionscript": "webpack --config ./extension.webpack.config.js",
-    "clear:terminal": "tput reset",
+    "clear:terminal": "if [ -t 1 ]; then tput reset; else echo 'Terminal not interactive, skipping clear'; fi",
     "build:extension": "npm run clear:terminal && npm run pack:extensionscript && cross-env-shell BUILD_TYPE=extension npm run build && npm run afterbuild && npm run zip:extension",
     "eslint": "./node_modules/.bin/eslint \"app/**/*.{js,jsx,ts,tsx}\" --ignore-pattern \"app/lib/\" --ignore-pattern \"app/shared/\"",
     "check-types": "tsc --noemit",
