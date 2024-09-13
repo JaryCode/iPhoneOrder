@@ -23,6 +23,12 @@ jobs:
       run: |
         npm install
         npm run build:extension
+      env:
+        CI: true
+
+    - name: 生成发布标签
+      id: generate_tag
+      run: echo "RELEASE_TAG=$(date +'%y%m%d%H%M%S')" >> $GITHUB_OUTPUT
 
     - name: 创建 Release
       id: create_release
@@ -30,8 +36,8 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag_name: ${{ github.sha }}
-        release_name: Release ${{ github.sha }}
+        tag_name: ${{ steps.generate_tag.outputs.RELEASE_TAG }}
+        release_name: Release ${{ steps.generate_tag.outputs.RELEASE_TAG }}
         draft: false
         prerelease: false
 
